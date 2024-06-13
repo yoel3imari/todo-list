@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\ApiResponseClass;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -11,15 +13,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        $users = User::paginate(10);
+        return ApiResponseClass::sendResponse(UserResource::collection($users), "users retrieved successfully.", 200);
     }
 
     /**
@@ -27,7 +22,12 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        if (!$user) {
+            ApiResponseClass::sendResponse(null, "User not found.", 404);
+        }
+
+        return ApiResponseClass::sendResponse($user, "User retrieved successfully.", 200);
     }
 
     /**
@@ -35,7 +35,13 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        if (!$user) {
+            ApiResponseClass::sendResponse(null, "User not found.", 404);
+        }
+
+        $user->update($request->all());
+        return ApiResponseClass::sendResponse($user, "User updated successfully.", 200);
     }
 
     /**
@@ -43,6 +49,13 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        if (!$user) {
+            ApiResponseClass::sendResponse(null, "User not found.", 404);
+        }
+
+        $user->delete();
+        return ApiResponseClass::sendResponse(null, "User deleted successfully.", 200);
     }
 }

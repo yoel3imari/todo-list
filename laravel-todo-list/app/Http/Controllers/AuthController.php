@@ -50,6 +50,11 @@ class AuthController extends Controller
             "name" => "required|string"
         ]);
 
+        $exists = User::where('email', $request->email)->exists();
+
+        if($exists){
+            return ApiResponseClass::sendResponse(null, "Email already exists", ResponseAlias::HTTP_BAD_REQUEST);
+        }
 
         $user = User::create([
             "email" => $request->email,
@@ -59,7 +64,7 @@ class AuthController extends Controller
 
         $token = $user->createToken($this->user_token)->accessToken;
 
-        return ApiResponseClass::sendResponse(null, "login failed", ResponseAlias::HTTP_UNAUTHORIZED);
+        return ApiResponseClass::sendResponse($user, "login failed", ResponseAlias::HTTP_UNAUTHORIZED);
     }
 
     public function logout(Request $request)
