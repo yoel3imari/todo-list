@@ -11,10 +11,21 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    center: true,
+    frame: true,
+    vibrancy: 'under-window',
+    visualEffectState: 'active',
+    // titleBarStyle: '',
+    // trafficLightPosition: {x: 15,y: 10},
+    // transparent: true,
+    // backgroundColor: '#00000000',
+    title: 'Note Mark',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
   });
+
+  mainWindow.setMenuBarVisibility(false);
 
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {

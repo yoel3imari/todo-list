@@ -1,9 +1,10 @@
 <template>
-<h1>💖 Hello World!</h1>
-<p class="text-red-600 font-bold">Welcome to your Electron application.</p>
+  <MainLayout />
 </template>
 
 <script setup lang="ts">
+import MainLayout from './layouts/MainLayout.vue';
+
 console.log('👋 This message is being logged by "App.vue", included via Vite');
 </script>
 
