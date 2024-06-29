@@ -7,7 +7,8 @@
     @apply h-full;
   }
 
-  html, body {
+  html,
+  body {
     @apply h-full;
     @apply select-none;
     @apply font-mono antialiased text-white;
@@ -17,9 +18,20 @@
   header {
     -webkit-app-region: drag;
   }
-  
+
   button {
     -web-app-region: no-drag;
   }
-}
 
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[#555] rounded-md;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+}

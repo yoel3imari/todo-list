@@ -17,15 +17,22 @@ class ApiResponseClass
         throw new HttpResponseException(response()->json(["message"=> $message], 500));
     }
 
-    public static function sendResponse($result , $message ,$code=200): \Illuminate\Http\JsonResponse
+    public static function sendResponse($result=null , $message="" ,$code=200): \Illuminate\Http\JsonResponse
     {
         $response=[
-            'success' => true,
-            'data'    => $result
+            'data'    => $result,
+            "message" => $message
         ];
-        if(!empty($message)){
-            $response['message'] =$message;
-        }
         return response()->json($response, $code);
+    }
+
+    // not found
+    public static function notFound() {
+        return self::sendResponse(null, "Not Found", 404);
+    }
+
+    // access denied
+    public static function accessDenied() {
+        return self::sendResponse(null, "Access Denied", 403);
     }
 }

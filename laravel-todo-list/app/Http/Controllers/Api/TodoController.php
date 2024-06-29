@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Classes\ApiResponseClass;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\ItemResource;
 use App\Http\Resources\TodoResource;
 use App\Models\Todo;
 use Illuminate\Http\Request;

@@ -1,31 +1,29 @@
 <template>
   <li
-    class="px-4 py-2 border rounded-md mb-2 flex cursor-pointer"
-    :class="isActive ? 'border-amber-500' : 'border-white/20'"
-    @click="activateNote"
+    class="px-4 py-2 rounded-md mb-2 flex cursor-pointer hover:bg-zinc-400/75 transition-all"
+    :class="isActive ? 'bg-zinc-400/75' : 'border-zinc-500/75'"
+    @click="store.selectNote($props.note)"
   >
     <div class="flex-1">
-      <h3>{{ $props.np.title }}</h3>
+      <h3>{{ $props.note.title }}</h3>
       <p class="text-amber-300 text-sm">
-        {{ new Date($props.np.lastEditedTime).toLocaleTimeString() }}
+        {{ new Date($props.note.lastEditedTime).toLocaleTimeString() }}
       </p>
     </div>
-    <button class="font-bold text-rose-400">&Cross;</button>
   </li>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed } from "vue";
 import { NoteInfo } from "../shared/models";
+import { useNoteStore } from "../store/noteStore";
 const props = defineProps<{
-  np: NoteInfo;
+  note: NoteInfo;
 }>();
 
-const isActive = ref(false);
+const store = useNoteStore();
+const isActive = computed(() => store.selectedNote === props.note);
 
-const activateNote = () => {
-  isActive.value = true;
-};
 </script>
 
 <style lang="scss"></style>

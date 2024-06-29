@@ -19,7 +19,7 @@ const createWindow = () => {
     // trafficLightPosition: {x: 15,y: 10},
     // transparent: true,
     // backgroundColor: '#00000000',
-    title: 'Note Mark',
+    title: "Notebook",
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },

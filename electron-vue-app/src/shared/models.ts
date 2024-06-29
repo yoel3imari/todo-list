@@ -1,4 +1,6 @@
 export type NoteInfo = {
-  title: string,
-  lastEditedTime: number
-}
+  title: string;
+  lastEditedTime: number;
+  lastOpenedTime: number;
+  content: string;
+};

@@ -3,4 +3,7 @@
 - [ ] install dependencies:
   - icons
   - tailwind-merge
-  - 
+
+- [ ] add note
+  - cteate new md file on system storage
+- [ ] ed

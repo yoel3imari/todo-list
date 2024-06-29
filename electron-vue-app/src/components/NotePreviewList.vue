@@ -1,17 +1,19 @@
 <template>
-  <ul class="border-t mt-2 pt-2 h-[100vh-32px] overflow-auto">
-    <NotePreview :np="note" />
+  <ul class="border-t pt-2 h-[100vh-32px] overflow-auto">
+    <NotePreview v-for="note in store.allNotes" :note="note" />
   </ul>
 </template>
 
 <script setup lang="ts">
-import { NoteInfo } from '../shared/models';
+import { onMounted } from 'vue';
+import { useNoteStore } from '../store/noteStore';
 import NotePreview from './NotePreview.vue';
+ 
+const store = useNoteStore()
 
-const note: NoteInfo = {
-  title: "hello",
-  lastEditedTime: new Date().getTime()
-}
+onMounted(() => {
+  store.selectNote(store.allNotes[0])
+})
 </script>
 
 <style lang="scss"></style>

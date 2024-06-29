@@ -5,12 +5,10 @@
       <div class="form"></div>
     </div>
   </AuthLayout>
-  </template>
-  
-  <script setup lang="ts">
-  
-  </script>
-  
-  <style lang="scss">
-  
-  </style>
+</template>
+
+<script setup lang="ts">
+
+</script>
+
+<style lang="scss"></style>

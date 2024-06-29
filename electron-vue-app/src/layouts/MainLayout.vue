@@ -1,7 +1,7 @@
 <template>
   <main class="flex flex-row h-screen">
     <!-- <DraggableBar /> -->
-    <TheSidebar class="p-2" />
+    <TheSidebar />
     <TheContent />
   </main>
 </template>

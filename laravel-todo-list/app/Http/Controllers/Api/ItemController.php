@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Classes\ApiResponseClass;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Todo;
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller

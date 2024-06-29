@@ -1,8 +1,8 @@
 <template>
-  <aside class="w-[250px] h-[100vh] overflow-hidden bg-zinc-500">
+  <div class="w-[250px] h-[100vh] overflow-hidden bg-zinc-500 p-[8px]">
     <ControlPanel />
     <NotePreviewList />
-  </aside>
+  </div>
 </template>
 
 <script setup lang="ts">

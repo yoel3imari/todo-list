@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Classes\ApiResponseClass;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\AuthResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class AuthController extends Controller
@@ -31,14 +31,12 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $user->createToken($this->user_token)->accessToken;
-
+            $user->token = $user->createToken($this->user_token)->plainTextToken;
             return ApiResponseClass::sendResponse(
-                $user,
+                new AuthResource($user),
                 "You logged in!",
             );
         }
-
         return ApiResponseClass::sendResponse(null, "login failed", ResponseAlias::HTTP_UNAUTHORIZED);
     }
 
@@ -52,7 +50,7 @@ class AuthController extends Controller
 
         $exists = User::where('email', $request->email)->exists();
 
-        if($exists){
+        if ($exists) {
             return ApiResponseClass::sendResponse(null, "Email already exists", ResponseAlias::HTTP_BAD_REQUEST);
         }
 
@@ -62,21 +60,20 @@ class AuthController extends Controller
             "password" => Hash::make($request->password)
         ]);
 
-        $token = $user->createToken($this->user_token)->accessToken;
-
-        return ApiResponseClass::sendResponse($user, "login failed", ResponseAlias::HTTP_UNAUTHORIZED);
+        $user->token = $user->createToken($this->user_token)->plainTextToken;
+        return ApiResponseClass::sendResponse(new AuthResource($user), "login failed", ResponseAlias::HTTP_UNAUTHORIZED);
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $request->user()->currentAccessToken()->delete();
         return ApiResponseClass::sendResponse(null, "logged out", ResponseAlias::HTTP_OK);
     }
 
     public function verify_token(Request $request)
     {
-        return ApiResponseClass::sendResponse(Auth::user(), "token verified", 200);
+        return ApiResponseClass::sendResponse(new AuthResource(Auth::user()), "token verified", 200);
     }
 }
