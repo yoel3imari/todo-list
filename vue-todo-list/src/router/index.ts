@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from '../views/HomePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,7 +9,7 @@ const router = createRouter({
       component: () => import('../views/HomePage.vue')
     },
     {
-      path: '/signin',
+      path: '/auth/login',
       name: 'signin',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
@@ -18,7 +17,7 @@ const router = createRouter({
       component: () => import('../views/SignIn.vue')
     },
     {
-      path: '/signup',
+      path: '/auth/sign-up',
       name: 'signup',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route

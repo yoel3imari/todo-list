@@ -15,6 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        // todo: check if auth::user is admin before
+        // non admin users cannot access these data
         $users = User::paginate(10);
         return ApiResponseClass::sendResponse(UserResource::collection($users), "users retrieved successfully.", 200);
     }
@@ -29,7 +31,7 @@ class UserController extends Controller
             ApiResponseClass::sendResponse(null, "User not found.", 404);
         }
 
-        return ApiResponseClass::sendResponse($user, "User retrieved successfully.", 200);
+        return ApiResponseClass::sendResponse(new UserResource($user), "User retrieved successfully.", 200);
     }
 
     /**
@@ -43,6 +45,7 @@ class UserController extends Controller
         }
 
         $user->update($request->all());
+        $user->save();
         return ApiResponseClass::sendResponse($user, "User updated successfully.", 200);
     }
 

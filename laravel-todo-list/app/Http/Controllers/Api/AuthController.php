@@ -61,7 +61,7 @@ class AuthController extends Controller
         ]);
 
         $user->token = $user->createToken($this->user_token)->plainTextToken;
-        return ApiResponseClass::sendResponse(new AuthResource($user), "login failed", ResponseAlias::HTTP_UNAUTHORIZED);
+        return ApiResponseClass::sendResponse(new AuthResource($user), "Account created successfully", ResponseAlias::HTTP_OK);
     }
 
     public function logout(Request $request)

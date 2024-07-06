@@ -90,6 +90,6 @@ class TodoController extends Controller
         if (!$todo) {
             ApiResponseClass::sendResponse(null, "Todo not found.", 404);
         }
-        return ApiResponseClass::sendResponse($todo, "Todo deleted successfully.");
+        return ApiResponseClass::sendResponse($todo, "Todo deleted successfully.", 200);
     }
 }
