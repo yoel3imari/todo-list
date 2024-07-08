@@ -17,6 +17,8 @@ class TodoResource extends JsonResource
         return [
             "id" => $this->id,
             "title" => $this->title,
+            "total_items" => $this->items->count(),
+            "total_completed" => $this->items->where('completed', true)->count(),
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at
         ];

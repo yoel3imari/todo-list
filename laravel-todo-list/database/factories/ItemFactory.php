@@ -20,6 +20,7 @@ class ItemFactory extends Factory
         return [
             "content" => $this->faker->paragraph(),
             "deadline" => $this->faker->dateTime(),
+            "completed" => $this->faker->boolean(),
             "todo_id" => Todo::inRandomOrder()->first()->id,
             "created_at" => $this->faker->dateTime(),
             "updated_at" => $this->faker->dateTime()

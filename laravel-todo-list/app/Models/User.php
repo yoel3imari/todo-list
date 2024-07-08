@@ -51,4 +51,8 @@ class User extends Authenticatable
         return $this->hasMany(Todo::class);
     }
 
+    public function items()
+    {
+        return $this->hasManyThrough(Item::class, Todo::class);
+    }
 }

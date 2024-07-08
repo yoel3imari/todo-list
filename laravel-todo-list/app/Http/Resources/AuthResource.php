@@ -16,9 +16,11 @@ class AuthResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            "id" => $this->id,
             "name" => $this->name,
             "email" => $this->email,
             "email_verified" => $this->email_verified_at,
+            "total_pending" => $this->items->where('completed', false)->count(),
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
             "token" => $this->token

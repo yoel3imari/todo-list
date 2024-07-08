@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Classes\ApiResponseClass;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ItemResource;
+use App\Http\Resources\ItemCollection;
+use App\Http\Resources\TodoCollection;
 use App\Http\Resources\TodoResource;
 use App\Models\Todo;
 use Illuminate\Http\Request;
@@ -15,11 +17,22 @@ class TodoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        $todos = $user->todos()->paginate(10);
-        return ApiResponseClass::sendResponse(TodoResource::collection($todos), "");
+
+        $query = $user->todos();
+
+        if($request->has('title')) {
+            $query->where('title', 'like', '%' . $request->input('title') . '%');
+        }
+
+        if($request->has('created_at_from') && $request->has('created_at_to')) {
+            $query->whereBetween('created_at', [$request->input('created_at_from'), $request->input('created_at_to')]);
+        }
+
+        $todos = $query->orderBy("todos.created_at", "desc")->paginate(10);
+        return new TodoCollection($todos);
     }
 
     /**
@@ -28,10 +41,13 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        if( $user->id != $request->user_id ) {
-            return ApiResponseClass::accessDenied();
-        }
-        $newTodo = Todo::create($request->all());
+//        dd(Auth::user()->getAuthIdentifier());
+//        return;
+        $newTodo = new Todo([
+            "title" => $request->input("title"),
+            "user_id" => Auth::user()->getAuthIdentifier()
+        ]);
+        $newTodo->save();
         return ApiResponseClass::sendResponse(new TodoResource($newTodo), "Todo created successfully.", 200);
     }
 
@@ -41,25 +57,10 @@ class TodoController extends Controller
     public function show(string $id)
     {
         $todo = Todo::findOrFail($id);
-        if( Auth::user()->id != $todo->user_id ) {
+        if( Auth::user()->getAuthIdentifier() != $todo->user_id ) {
             return ApiResponseClass::accessDenied();
         }
-        if (!$todo) {
-            ApiResponseClass::sendResponse(null, "Todo not found.", 404);
-        }
-        return ApiResponseClass::sendResponse($todo);
-    }
-
-    /**
-     * get all items in this todo
-     */
-    public function get_items(string $id) {
-        $todo = Todo::findOrFail($id);
-        if( Auth::user()->id != $todo->user_id ) {
-            return ApiResponseClass::accessDenied();
-        }
-        $items = $todo->items;
-        return ApiResponseClass::sendResponse(ItemResource::collection($items));
+        return ApiResponseClass::sendResponse(new TodoResource($todo));
     }
 
     /**
@@ -68,13 +69,12 @@ class TodoController extends Controller
     public function update(Request $request, string $id)
     {
         $todo = Todo::findOrFail($id);
-        if( Auth::user()->id != $todo->user_id ) {
+        if( Auth::user()->getAuthIdentifier() != $todo->user_id ) {
             return ApiResponseClass::accessDenied();
         }
-        if (!$todo) {
-            ApiResponseClass::sendResponse(null, "Todo not found.", 404);
-        }
-        $todo->update($request->all());
+        $todo->update([
+            "title" => $request->input("title"),
+        ]);
         return ApiResponseClass::sendResponse(new TodoResource($todo), "Todo updated successfully.");
     }
 
@@ -84,12 +84,10 @@ class TodoController extends Controller
     public function destroy(string $id)
     {
         $todo = Todo::findOrFail($id);
-        if( Auth::user()->id != $todo->user_id ) {
+        if( Auth::user()->getAuthIdentifier() != $todo->user_id ) {
             return ApiResponseClass::accessDenied();
         }
-        if (!$todo) {
-            ApiResponseClass::sendResponse(null, "Todo not found.", 404);
-        }
-        return ApiResponseClass::sendResponse($todo, "Todo deleted successfully.", 200);
+        $todo->delete();
+        return ApiResponseClass::sendResponse(null, "Todo deleted successfully.", 200);
     }
 }

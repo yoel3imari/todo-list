@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('content');
             $table->dateTime("deadline");
+            $table->boolean("completed")->default(false);
             $table->foreignId("todo_id")->constrained("todos")->cascadeOnDelete();
             $table->timestamps();
         });

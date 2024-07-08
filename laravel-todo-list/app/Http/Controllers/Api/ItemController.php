@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Classes\ApiResponseClass;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Todo;
+use App\Http\Resources\ItemCollection;
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
+use App\Models\Todo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,13 +17,37 @@ class ItemController extends Controller
     /**
      * get all items of auth user
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        $items = Item::whereHas('todos', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })->paginate(10);
-        return ApiResponseClass::sendResponse(ItemResource::collection($items));
+
+        $query = $user->items();
+
+        if ($request->has('content')) {
+            $query->where('content', 'like', '%' . $request->input('content') . '%');
+        }
+
+        if ($request->has('completed')) {
+            $query->where('completed', $request->input('completed'));
+        }
+
+        if ($request->has('deadline_from') && $request->has('deadline_to')) {
+            $query->whereBetween('deadline', [$request->input('deadline_from'), $request->input('deadline_to')]);
+        }
+
+        if ($request->has('created_at_from') && $request->has('created_at_to')) {
+            $query->whereBetween('created_at', [$request->input('created_at_from'), $request->input('created_at_to')]);
+        }
+
+        if ($request->has('todo_id')) {
+            $todo = Todo::find($request->input('todo_id'));
+            if ($todo && $todo->user->id == Auth::id()) {
+                $query->where('todo_id', $request->input('todo_id'));
+            }
+        }
+
+        $items = $query->orderBy('items.created_at', 'desc')->paginate(10);
+        return new ItemCollection($items);
     }
 
     /**
@@ -31,11 +56,16 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        $todo = Todo::findOrFail($request->todo_id);
-        if ($todo->user != $user) {
+        $todo = Todo::findOrFail($request->input("todo_id"));
+        if ($todo->user_id != $user->getAuthIdentifier()) {
             return ApiResponseClass::accessDenied();
         }
-        $item = Item::create($request->all());
+        $item = new Item([
+            "content" => $request->input("content"),
+            "deadline" => $request->input("deadline"),
+            "todo_id" => $todo->id,
+        ]);
+        $item->save();
         return ApiResponseClass::sendResponse(new ItemResource($item), "Item created successfully.");
     }
 
@@ -45,6 +75,9 @@ class ItemController extends Controller
     public function show(string $id)
     {
         $item = $this->verify_ownership($id);
+        if ($item == null) {
+            return ApiResponseClass::accessDenied();
+        }
         return ApiResponseClass::sendResponse(new ItemResource($item));
     }
 
@@ -54,7 +87,15 @@ class ItemController extends Controller
     public function update(Request $request, string $id)
     {
         $item = self::verify_ownership($id);
-        $item->update($request->all());
+        if ($item == null) {
+            return ApiResponseClass::accessDenied();
+        }
+        $item->update([
+            "content" => $request->input("content") ?: $item->content,
+            "deadline" => $request->input("deadline") ?: $item->deadline,
+            "completed" => $request->input("completed") ?: $item->completed
+        ]);
+        $item->save();
         return ApiResponseClass::sendResponse(new ItemResource($item), "Item updated successfully.");
     }
 
@@ -65,17 +106,16 @@ class ItemController extends Controller
     {
         $item = Item::findOrFail($id);
         $item->delete();
-        return ApiResponseClass::sendResponse(new ItemResource($item), "Item deleted successfully.");
+        return ApiResponseClass::sendResponse(null, "Item deleted successfully.");
     }
 
-    public function verify_ownership($id): Item|JsonResponse
+    public function verify_ownership($id): Item|null
     {
-        $user = Auth::user();
         $item = Item::findOrFail($id);
-        $todo = $item->todo();
-        if ($todo->user() != $user) {
-            return ApiResponseClass::accessDenied();
+        if ($item->todo->user_id != Auth::id()) {
+            return null;
         }
+        $item->delete();
         return $item;
     }
 }
