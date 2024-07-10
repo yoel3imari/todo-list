@@ -40,9 +40,6 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
-//        dd(Auth::user()->getAuthIdentifier());
-//        return;
         $newTodo = new Todo([
             "title" => $request->input("title"),
             "user_id" => Auth::user()->getAuthIdentifier()
