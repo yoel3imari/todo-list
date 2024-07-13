@@ -13,12 +13,18 @@ class ApiService {
     ApiService.vueInstance.axios.defaults.baseURL = env.API_URL
     ApiService.vueInstance.axios.defaults.withCredentials = true
 
+    ApiService.vueInstance.axios.defaults.headers.common['Accept'] = 'application/json'
+    ApiService.vueInstance.axios.defaults.headers.common['Content-Type'] = 'application/json'
+
+    this.setToken()
+  }
+
+  static setToken() {
     /**
      * set axios headers
      */
-    ApiService.vueInstance.axios.defaults.headers.common['Authorization'] = `Bearer ${TokenService.getToken()}`
-    ApiService.vueInstance.axios.defaults.headers.common['Accept'] = 'application/json'
-    ApiService.vueInstance.axios.defaults.headers.common['Content-Type'] = 'application/json'
+    ApiService.vueInstance.axios.defaults.headers.common['Authorization'] =
+      `Bearer ${TokenService.getToken()}`
   }
 
   static get(endpoint: string, params = {}) {

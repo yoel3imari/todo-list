@@ -1,56 +1,54 @@
 <template>
-  <AuthLayout>
-    <div class="bg-white rounded-2xl py-6 px-12 w-96">
-      <div class="flex flex-col items-center justify-center">
-        <!-- <img src="/images/hero-1.png" width="130" /> -->
-        <h1 class="text-2xl font-bold">
-          Welcome to <span class="bg-sky-500 p-[1px] text-white">Todo</span>
-        </h1>
-      </div>
-      <a-form
-        ref="formRef"
-        :rules="rules"
-        :model="formState"
-        name="basic"
-        layout="vertical"
-        @finish="handleFinish"
-        @finishFailed="handleFinishFailed"
-      >
-        <a-form-item label="Name" name="name">
-          <a-input v-model:value="formState.name" />
-        </a-form-item>
-        <a-form-item label="Email" name="email">
-          <a-input v-model:value="formState.email" />
-        </a-form-item>
-
-        <a-form-item has-feedback label="Password" name="password">
-          <a-input v-model:value="formState.password" type="password" autocomplete="off" />
-        </a-form-item>
-
-        <a-form-item has-feedback label="Confirm" name="checkPass">
-          <a-input v-model:value="formState.checkPass" type="password" autocomplete="off" />
-        </a-form-item>
-
-        <a-form-item>
-          <a-button type="primary" html-type="submit">
-            <span v-if="isPending">....</span>
-            <span v-else>Enter</span>
-          </a-button>
-        </a-form-item>
-      </a-form>
-      <div>
-        <p>
-          You already have an account ? <Link to="/auth/sign-up" class="text-sky-500">Log In</Link>
-        </p>
-      </div>
+  <div class="bg-white rounded-2xl py-6 px-12 w-96">
+    <div class="flex flex-col items-center justify-center">
+      <!-- <img src="/images/hero-1.png" width="130" /> -->
+      <h1 class="text-2xl font-bold">
+        Welcome to <span class="bg-sky-500 p-[1px] text-white">Todo</span>
+      </h1>
     </div>
-  </AuthLayout>
+    <a-form
+      ref="formRef"
+      :rules="rules"
+      :model="formState"
+      name="basic"
+      layout="vertical"
+      @finish="handleFinish"
+      @finishFailed="handleFinishFailed"
+    >
+      <a-form-item label="Name" name="name">
+        <a-input v-model:value="formState.name" />
+      </a-form-item>
+      <a-form-item label="Email" name="email">
+        <a-input v-model:value="formState.email" />
+      </a-form-item>
+
+      <a-form-item has-feedback label="Password" name="password">
+        <a-input v-model:value="formState.password" type="password" autocomplete="off" />
+      </a-form-item>
+
+      <a-form-item has-feedback label="Confirm" name="checkPass">
+        <a-input v-model:value="formState.checkPass" type="password" autocomplete="off" />
+      </a-form-item>
+
+      <a-form-item>
+        <a-button type="primary" html-type="submit">
+          <span v-if="isPending">....</span>
+          <span v-else>Sign Up</span>
+        </a-button>
+      </a-form-item>
+    </a-form>
+    <div>
+      <p>
+        You already have an account ?
+        <Link :to="{ name: 'login' }" class="text-sky-500">Log In</Link>
+      </p>
+    </div>
+  </div>
   <contextHolder />
 </template>
 
 <script setup lang="ts">
 import { RouterLink as Link, useRouter } from 'vue-router'
-import AuthLayout from '../layouts/AuthLayout.vue'
 import { reactive, ref } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { notification, type FormInstance } from 'ant-design-vue'
@@ -116,19 +114,19 @@ const handleFinish = async (values: FormState) => {
     password: values.password
   })
 
-  if( store.error ) {
+  if (store.error) {
     api.error({
       message: 'Sign up failed!',
       description: store.error.toString(),
       placement: 'bottomRight'
     })
   } else {
-
+    router.push({ name: 'dashboard-overview' })
   }
 }
 const handleFinishFailed = (errors: Error) => {
-  console.log(errors);
-  if( isError.value ) {
+  console.log(errors)
+  if (isError.value) {
     api.error({
       message: 'sign up failed!',
       description: error.value?.message,

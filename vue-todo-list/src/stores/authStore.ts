@@ -1,8 +1,7 @@
 import ApiService from '@/utils/ApiService'
 import TokenService from '@/utils/TokenService'
 import { defineStore } from 'pinia'
-import { pushScopeId, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 
 interface Auth {
   id: number
@@ -16,65 +15,73 @@ interface Auth {
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  const auth = ref<Auth | null>(null);
-  const error = ref<String | null>(null);
+  const auth = ref<Auth | null>(null)
+  const error = ref<String | null>(null)
 
   const login = async (cred: { email: string; password: string }) => {
-    // send credentials
-    // get response
-    // store token
-    // store user info
-    return ApiService.post('/auth/login', cred).then(({ data }) => {
-      setSession(data.data)
-    }).catch((data) => {
-      error.value = data.message
-    })
+    return ApiService.post('/auth/login', cred)
+      .then(({ data }) => {
+        // console.log(data);
+        setSession(data.data)
+      })
+      .catch((data) => {
+        error.value = data.message
+      })
   }
 
   const register = async (data: { name: string; email: string; password: string }) => {
-    // send credentials
-    // get response
-    // store token
-    // store user info
-    return ApiService.post('/auth/register', data).then(({ data }) => {
-      setSession(data.data)
-    }).catch((data) => {
-      error.value = data.message
-    })
+    return ApiService.post('/auth/register', data)
+      .then(({ data }) => {
+        // console.log(data.data);
+        setSession(data.data)
+      })
+      .catch((data) => {
+        error.value = data.message
+      })
   }
 
   const setSession = (data: Auth) => {
     // console.log(data);
+    error.value = null
     auth.value = data
     TokenService.saveToken(auth.value.token)
-    error.value = null;
   }
 
   const purgeAuth = () => {
-    auth.value = null
+    auth.value = null;
+    error.value = null;
     TokenService.destroyToken()
   }
 
-  const verify_token = async () => {
-    if (TokenService.getToken()) {
-      ApiService.get('/auth/verify')
-        .then(({ data }) => {
-          setSession(data.data)
-        })
-        .catch(() => {
-          logout()
-        })
-    } else {
-      logout()
+  const verify_token: () => Promise<boolean> = async () => {
+    let isValid = false
+    const token = TokenService.getToken()
+    if (!token) {
+      console.log('token missing')
+      purgeAuth()
     }
+
+    ApiService.get('/auth/verify')
+      .then(() => {
+        console.log('token verified')
+        // setSession(data.data)
+        isValid = true
+      })
+      .catch(() => {
+        console.log('token not valid')
+        purgeAuth()
+      })
+
+    return isValid
   }
 
   const logout = async () => {
-    purgeAuth();
-    ApiService.get('/auth/logout').finally(() => {
-      const router = useRouter();
-      router.push({name: "login"})
-    });
+    const token = TokenService.getToken()
+    if (token) {
+      ApiService.get('/auth/logout').then(() => {
+        purgeAuth()
+      })
+    }
   }
 
   return {
@@ -83,6 +90,6 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     register,
     verify_token,
-    logout,
+    logout
   }
 })

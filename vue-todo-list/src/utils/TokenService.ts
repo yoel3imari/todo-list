@@ -1,3 +1,5 @@
+import ApiService from "./ApiService";
+
 const ID_TOKEN_KEY = "id_token" as string;
 
 /**
@@ -13,6 +15,7 @@ export const getToken = (): string | null => {
  */
 export const saveToken = (token: string): void => {
   window.localStorage.setItem(ID_TOKEN_KEY, token);
+  ApiService.setToken();
 };
 
 /**
@@ -20,6 +23,7 @@ export const saveToken = (token: string): void => {
  */
 export const destroyToken = (): void => {
   window.localStorage.removeItem(ID_TOKEN_KEY);
+  ApiService.setToken();
 };
 
 export default { getToken, saveToken, destroyToken };

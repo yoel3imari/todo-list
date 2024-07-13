@@ -1,4 +1,5 @@
 import { useAuthStore } from '@/stores/authStore'
+import TokenService from '@/utils/TokenService'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -8,35 +9,41 @@ const router = createRouter({
       path: '/',
       name: 'home',
       meta: {
-        title: 'Home',
+        title: 'Home'
       },
       component: () => import('../views/HomePage.vue')
     },
     {
-      path: '/auth/login',
-      name: 'login',
-      meta: {
-        title: 'Login',
-      },
-      component: () => import('../views/SignIn.vue')
-    },
-    {
-      path: '/auth/sign-up',
-      name: 'signup',
-      meta: {
-        title: 'Sign up',
-      },
-      component: () => import('../views/SignUp.vue')
+      path: '/auth',
+      component: () => import('../layouts/AuthLayout.vue'),
+      children: [
+        {
+          path: '/auth/login',
+          name: 'login',
+          meta: {
+            title: 'Login'
+          },
+          component: () => import('../views/auth/SignIn.vue')
+        },
+        {
+          path: '/auth/sign-up',
+          name: 'signup',
+          meta: {
+            title: 'Sign up'
+          },
+          component: () => import('../views/auth/SignUp.vue')
+        },
+      ]
     },
     {
       path: '/dashboard',
       component: () => import('../layouts/DashboardLayout.vue'),
       meta: {
-        middleware: 'auth',
+        middleware: 'auth'
       },
       children: [
         {
-          path: '/overview',
+          path: '/dashboard/overview',
           component: () => import('../views/dashboard/OverviewPage.vue'),
           name: 'dashboard-overview',
           meta: {
@@ -44,44 +51,47 @@ const router = createRouter({
           }
         },
         {
-          path: '/todos',
+          path: '/dashboard/todos',
           component: () => import('../views/dashboard/TodoPage.vue'),
-          name: 'dashboard-overview',
+          name: 'dashboard-todos',
           meta: {
             title: 'Todos'
           }
         },
         {
-          path: '/items',
+          path: '/dashboard/items',
           component: () => import('../views/dashboard/ItemPage.vue'),
-          name: 'dashboard-overview',
+          name: 'dashboard-items',
           meta: {
             title: 'Items'
           }
-        },
+        }
       ]
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       meta: {
-        title: 'Not Found',
+        title: 'Not Found'
       },
-      component: () => import ('../views/NotFound.vue')
+      component: () => import('../views/NotFound.vue')
     }
   ]
 })
 
+router.beforeEach(async (to) => {
+  window.document.title = String(to.meta?.title) ||'';
+  // const store = useAuthStore()
+  // if (to.meta.middleware === 'auth') {
+  //   console.log('verifying auth before entering: ' + to.name?.toString())
+  //   console.log('token: ' + TokenService.getToken())
+  //   const isValid = await store.verify_token()
+  //   if (!isValid) {
+  //     router.push({ name: 'login' })
+  //   }
+  // }
 
-router.beforeEach(async (to, from, next) => {
-  
-  const store = useAuthStore()
-
-  if( to.meta.middleware === 'auth' ) {
-    await store.verify_token();
-    return;
-  }
-  return next();
+  // return next();
 })
 
 export default router
