@@ -43,9 +43,9 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
+            "name" => "required|string",
             "email" => "required|string|email|",
             "password" => "required|string",
-            "name" => "required|string"
         ]);
 
         $exists = User::where('email', $request->email)->exists();

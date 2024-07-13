@@ -1,7 +1,5 @@
 <template>
-<AppLayout>
-  <h1>List Page</h1>
-</AppLayout>
+  <h1>Overview</h1>
 </template>
 
 <script setup lang="ts">

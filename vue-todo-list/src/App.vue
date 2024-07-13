@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// check auth
 </script>
 
 <template>

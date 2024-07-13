@@ -1,7 +1,5 @@
 <template>
-<div class=" bg-gray-100 h-full w-full">
-  <slot />
-</div>
+<h1>Todo</h1>
 </template>
 
 <script setup lang="ts">

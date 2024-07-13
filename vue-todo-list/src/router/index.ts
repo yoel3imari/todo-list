@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/stores/authStore'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -6,25 +7,81 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
+      meta: {
+        title: 'Home',
+      },
       component: () => import('../views/HomePage.vue')
     },
     {
       path: '/auth/login',
-      name: 'signin',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      name: 'login',
+      meta: {
+        title: 'Login',
+      },
       component: () => import('../views/SignIn.vue')
     },
     {
       path: '/auth/sign-up',
       name: 'signup',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: {
+        title: 'Sign up',
+      },
       component: () => import('../views/SignUp.vue')
+    },
+    {
+      path: '/dashboard',
+      component: () => import('../layouts/DashboardLayout.vue'),
+      meta: {
+        middleware: 'auth',
+      },
+      children: [
+        {
+          path: '/overview',
+          component: () => import('../views/dashboard/OverviewPage.vue'),
+          name: 'dashboard-overview',
+          meta: {
+            title: 'Dashboard'
+          }
+        },
+        {
+          path: '/todos',
+          component: () => import('../views/dashboard/TodoPage.vue'),
+          name: 'dashboard-overview',
+          meta: {
+            title: 'Todos'
+          }
+        },
+        {
+          path: '/items',
+          component: () => import('../views/dashboard/ItemPage.vue'),
+          name: 'dashboard-overview',
+          meta: {
+            title: 'Items'
+          }
+        },
+      ]
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      meta: {
+        title: 'Not Found',
+      },
+      component: () => import ('../views/NotFound.vue')
     }
   ]
+})
+
+
+router.beforeEach(async (to, from, next) => {
+  
+  const store = useAuthStore()
+
+  if( to.meta.middleware === 'auth' ) {
+    await store.verify_token();
+    return;
+  }
+  return next();
 })
 
 export default router
