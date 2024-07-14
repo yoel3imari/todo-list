@@ -51,7 +51,7 @@ import { RouterLink as Link, useRouter } from 'vue-router'
 import { reactive } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import { useMutation } from '@tanstack/vue-query'
-import { notification } from 'ant-design-vue'
+import { notif, contextHolder } from '@/utils/NotifService'
 
 interface FormState {
   email: string
@@ -63,7 +63,6 @@ const formState = reactive<FormState>({
   password: ''
 })
 
-const [api, contextHolder] = notification.useNotification()
 const router = useRouter()
 const store = useAuthStore()
 const { isPending, isError, error, mutate } = useMutation({
@@ -76,9 +75,11 @@ const onFinish = (values: any) => {
     password: values.password
   })
 
-  if (store.error) {
-    api.error({
+  if (store.error !== null) {
+    notif.error({
       message: 'Login failed!',
+      closeIcon: true,
+      duration: 0,
       description: store.error.toString(),
       placement: 'bottomRight'
     })
@@ -90,8 +91,10 @@ const onFinish = (values: any) => {
 
 const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo)
-  api.error({
+  notif.error({
     message: 'Login failed!',
+    closeIcon: true,
+    duration: 0,
     description: errorInfo.toString(),
     placement: 'bottomRight'
   })

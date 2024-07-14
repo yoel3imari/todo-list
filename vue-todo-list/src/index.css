@@ -13,13 +13,13 @@ html, body, #app {
 }
 
 ::-webkit-scrollbar {
-  @apply w-1.5 rounded-full
+  @apply w-1.5
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-200 rounded-full 
+  @apply bg-gray-200
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-sky-200 rounded-full opacity-50
+  @apply bg-sky-200 opacity-50
 }

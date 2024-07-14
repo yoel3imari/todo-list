@@ -64,7 +64,7 @@ class AuthController extends Controller
         return ApiResponseClass::sendResponse(new AuthResource($user), "Account created successfully", ResponseAlias::HTTP_OK);
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
         Auth::logout();
         $request->session()->invalidate();
@@ -72,7 +72,7 @@ class AuthController extends Controller
         return ApiResponseClass::sendResponse(null, "logged out", ResponseAlias::HTTP_OK);
     }
 
-    public function verify_token(Request $request)
+    public function     verify_token(): JsonResponse
     {
         return ApiResponseClass::sendResponse(new AuthResource(Auth::user()), "token verified", 200);
     }

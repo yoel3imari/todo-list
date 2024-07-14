@@ -16,6 +16,7 @@ interface Auth {
 
 export const useAuthStore = defineStore('auth', () => {
   const auth = ref<Auth | null>(null)
+  const isAuth = ref<boolean>(false);
   const error = ref<String | null>(null)
 
   const login = async (cred: { email: string; password: string }) => {
@@ -44,12 +45,14 @@ export const useAuthStore = defineStore('auth', () => {
     // console.log(data);
     error.value = null
     auth.value = data
+    isAuth.value = true;
     TokenService.saveToken(auth.value.token)
   }
 
   const purgeAuth = () => {
     auth.value = null;
     error.value = null;
+    isAuth.value = false;
     TokenService.destroyToken()
   }
 
@@ -87,6 +90,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     auth,
     error,
+    isAuth,
     login,
     register,
     verify_token,

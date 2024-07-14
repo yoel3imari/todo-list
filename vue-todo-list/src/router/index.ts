@@ -79,19 +79,19 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach(async (to) => {
+router.beforeEach(async (to, from, next) => {
   window.document.title = String(to.meta?.title) ||'';
-  // const store = useAuthStore()
-  // if (to.meta.middleware === 'auth') {
-  //   console.log('verifying auth before entering: ' + to.name?.toString())
-  //   console.log('token: ' + TokenService.getToken())
-  //   const isValid = await store.verify_token()
-  //   if (!isValid) {
-  //     router.push({ name: 'login' })
-  //   }
-  // }
-
-  // return next();
+  const store = useAuthStore()
+  if (to.meta.middleware === 'auth') {
+    // console.log('verifying auth before entering: ' + to.name?.toString())
+    // console.log('token: ' + TokenService.getToken())
+    // const isValid = await store.verify_token()
+    if (store.isAuth) {
+      next()
+    }
+  } else {
+    next({ name: 'login' })
+  }
 })
 
 export default router
