@@ -16,7 +16,7 @@ interface Auth {
 
 export const useAuthStore = defineStore('auth', () => {
   const auth = ref<Auth | null>(null)
-  const isAuth = ref<boolean>(false);
+  const isAuth = ref<boolean>(false)
   const error = ref<String | null>(null)
 
   const login = async (cred: { email: string; password: string }) => {
@@ -45,29 +45,32 @@ export const useAuthStore = defineStore('auth', () => {
     // console.log(data);
     error.value = null
     auth.value = data
-    isAuth.value = true;
+    isAuth.value = true
     TokenService.saveToken(auth.value.token)
   }
 
   const purgeAuth = () => {
-    auth.value = null;
-    error.value = null;
-    isAuth.value = false;
+    auth.value = null
+    error.value = null
+    isAuth.value = false
     TokenService.destroyToken()
   }
 
   const verify_token: () => Promise<boolean> = async () => {
     let isValid = false
     const token = TokenService.getToken()
+    ApiService.setToken();
+    console.log(`token: ${token}`)
+
     if (!token) {
       console.log('token missing')
       purgeAuth()
     }
 
     ApiService.get('/auth/verify')
-      .then(() => {
+      .then(({ data }) => {
         console.log('token verified')
-        // setSession(data.data)
+        setSession(data.data)
         isValid = true
       })
       .catch(() => {

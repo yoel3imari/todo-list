@@ -31,8 +31,9 @@
 
       <a-form-item>
         <a-button type="primary" html-type="submit">
-          <span v-if="isPending">....</span>
-          <span v-else>Enter</span>
+          <!-- <span v-if="">....</span> -->
+          <!-- <span v-else>Enter</span> -->
+          <span>Enter</span>
         </a-button>
       </a-form-item>
     </a-form>
@@ -50,7 +51,7 @@
 import { RouterLink as Link, useRouter } from 'vue-router'
 import { reactive } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
-import { useMutation } from '@tanstack/vue-query'
+// import { useMutation } from '@tanstack/vue-query'
 import { notif, contextHolder } from '@/utils/NotifService'
 
 interface FormState {
@@ -65,12 +66,13 @@ const formState = reactive<FormState>({
 
 const router = useRouter()
 const store = useAuthStore()
-const { isPending, isError, error, mutate } = useMutation({
-  mutationFn: store.login
-})
 
-const onFinish = (values: any) => {
-  mutate({
+const onFinish = async (values: any) => {
+  // await mutate({
+  //   email: values.email,
+  //   password: values.password
+  // })
+  await store.login({
     email: values.email,
     password: values.password
   })

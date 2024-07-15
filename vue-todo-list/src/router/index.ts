@@ -32,7 +32,7 @@ const router = createRouter({
             title: 'Sign up'
           },
           component: () => import('../views/auth/SignUp.vue')
-        },
+        }
       ]
     },
     {
@@ -79,18 +79,16 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach(async (to, from, next) => {
-  window.document.title = String(to.meta?.title) ||'';
+router.beforeEach(async (to, from) => {
+  window.document.title = String(to.meta?.title) || ''
   const store = useAuthStore()
   if (to.meta.middleware === 'auth') {
     // console.log('verifying auth before entering: ' + to.name?.toString())
     // console.log('token: ' + TokenService.getToken())
     // const isValid = await store.verify_token()
-    if (store.isAuth) {
-      next()
+    if (!store.isAuth) {
+      router.push({ name: 'login' })
     }
-  } else {
-    next({ name: 'login' })
   }
 })
 

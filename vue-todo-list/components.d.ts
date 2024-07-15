@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AAvatar: typeof import('ant-design-vue/es')['Avatar']
     AButton: typeof import('ant-design-vue/es')['Button']
     ACheckbox: typeof import('ant-design-vue/es')['Checkbox']
     AForm: typeof import('ant-design-vue/es')['Form']
@@ -16,6 +17,7 @@ declare module 'vue' {
     DashboardFooter: typeof import('./src/components/DashboardFooter.vue')['default']
     DashboardHeader: typeof import('./src/components/DashboardHeader.vue')['default']
     DashboardSidebar: typeof import('./src/components/DashboardSidebar.vue')['default']
+    HeaderBtn: typeof import('./src/components/HeaderBtn.vue')['default']
     HomeHeader: typeof import('./src/components/HomeHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
