@@ -4,6 +4,7 @@
       <div id="left" class="flex gap-4 items-center justify-center h-full">
         <div id="burguer">
           <div
+            @click="layoutStore.toggleDashboardSidebarVisible"
             class="w-8 h-8 text-2xl bg-sky-200 text-sky-600 hover:bg-sky-500 hover:text-white cursor-pointer rounded flex items-center justify-center transition-all"
           >
             <span>
@@ -47,7 +48,9 @@
 </template>
 
 <script setup lang="ts">
+import { useLayoutStore } from '@/stores/layoutStore';
 import { Icon } from '@iconify/vue'
+const layoutStore = useLayoutStore()
 </script>
 
 <style lang="scss"></style>

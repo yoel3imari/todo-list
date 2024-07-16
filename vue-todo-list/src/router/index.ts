@@ -9,9 +9,9 @@ const router = createRouter({
       path: '/',
       name: 'home',
       meta: {
-        title: 'Home'
+        title: 'Todo'
       },
-      component: () => import('../views/HomePage.vue')
+      component: () => import('../App.vue'),
     },
     {
       path: '/auth',
@@ -88,6 +88,12 @@ router.beforeEach(async (to, from) => {
     // const isValid = await store.verify_token()
     if (!store.isAuth) {
       router.push({ name: 'login' })
+    }
+  }
+
+  if (to.name?.toString() && ['login', 'signup'].includes(to.name.toString())) {
+    if (store.isAuth) {
+      router.push({ name: 'dashboard-overview' })
     }
   }
 })
