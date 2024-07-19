@@ -1,5 +1,5 @@
 <template>
-  <nav class="hidden md:flex flex-col inset-0 h-screen bg-white col-span-1">
+  <nav :class="layoutStore.dashboardSidebarVisible ? 'flex fixed md:relative top-0 left-[-310px]':''" class="flex-col h-screen max-w-[300px] overflow-auto bg-white col-span-1">
     <div id="logo" class="h-16 border-b flex items-center justify-center">
       <Link to="/dashboard/overview">
         <span class="text-3xl font-bold text-sky-500 m-0 text-center">Todo</span>
@@ -26,7 +26,9 @@
 </template>
 
 <script setup lang="ts">
+import { useLayoutStore } from '@/stores/layoutStore';
 import { RouterLink as Link } from 'vue-router'
+const layoutStore = useLayoutStore();
 </script>
 
 <style lang="scss"></style>
