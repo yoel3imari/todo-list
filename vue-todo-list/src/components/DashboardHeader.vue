@@ -8,10 +8,10 @@
             class="w-8 h-8 text-2xl bg-sky-200 text-sky-600 hover:bg-sky-500 hover:text-white cursor-pointer rounded flex items-center justify-center transition-all"
           >
             <span v-if="layoutStore.dashboardSidebarVisible">
-              <Icon icon="mdi:hamburger-close" />
+              <Icon icon="mdi:hamburger-open" />
             </span>
             <span v-else>
-              <Icon icon="mdi:hamburger-open" />
+              <Icon icon="mdi:hamburger-close" />
             </span>
           </div>
         </div>

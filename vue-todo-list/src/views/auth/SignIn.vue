@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
 import { RouterLink as Link, useRouter } from 'vue-router'
-import { onMounted, reactive } from 'vue'
+import { reactive } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 // import { useMutation } from '@tanstack/vue-query'
 import { notif, contextHolder } from '@/utils/NotifService'
@@ -93,13 +93,6 @@ const onFinish = async (values: any) => {
 
 const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo)
-  notif.error({
-    message: 'Login failed!',
-    closeIcon: true,
-    duration: 0,
-    description: errorInfo.toString(),
-    placement: 'bottomRight'
-  })
 }
 </script>
 

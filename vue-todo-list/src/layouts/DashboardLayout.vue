@@ -1,7 +1,13 @@
 <template>
   <div class="bg-gray-50 h-full min-h-full w-full">
-    <div class="h-full grid grid-cols-2 transition-all" :class="layoutStore.dashboardSidebarVisible ? 'md:grid-cols-[280px_repeat(1,_1fr)]':'md:grid-cols-[80px_repeat(1,_1fr)]'">
-
+    <div
+      class="h-full grid grid-cols-2 transition-all"
+      :class="
+        layoutStore.dashboardSidebarVisible
+          ? 'md:grid-cols-[250px_repeat(1,_1fr)]'
+          : 'md:grid-cols-[80px_repeat(1,_1fr)]'
+      "
+    >
       <nav class="h-screen hidden md:block">
         <DashboardSidebar />
       </nav>
@@ -21,16 +27,12 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink as Link } from 'vue-router'
 import DashboardSidebar from '@/components/DashboardSidebar.vue'
 import DashboardHeader from '@/components/DashboardHeader.vue'
 import DashboardFooter from '@/components/DashboardFooter.vue'
 import { useLayoutStore } from '@/stores/layoutStore'
 
 const layoutStore = useLayoutStore()
-
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

@@ -127,13 +127,6 @@ const handleFinish = async (values: FormState) => {
 }
 const handleFinishFailed = (errors: Error) => {
   console.log(errors)
-  if (isError.value) {
-    api.error({
-      message: 'sign up failed!',
-      description: error.value?.message,
-      placement: 'bottomRight'
-    })
-  }
 }
 </script>
 

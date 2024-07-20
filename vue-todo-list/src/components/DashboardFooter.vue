@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-white h-8 text-sky-400 font-bold flex items-center justify-center text-center">
+  <footer class="h-8 text-sky-400 font-extralight text-xs flex items-center justify-center text-center">
     <span>{{year.getFullYear()}}&copy;yoel3imari</span>
   </footer>
 </template>
