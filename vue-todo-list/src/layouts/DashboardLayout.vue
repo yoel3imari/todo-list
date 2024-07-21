@@ -1,7 +1,7 @@
 <template>
   <div class="bg-gray-50 h-full min-h-full w-full">
     <div
-      class="h-full grid grid-cols-2 transition-all"
+      class="h-full grid grid-cols-1 transition-all"
       :class="
         layoutStore.dashboardSidebarVisible
           ? 'md:grid-cols-[250px_repeat(1,_1fr)]'
@@ -24,6 +24,7 @@
       </div>
     </div>
   </div>
+  <SidebarDrawer class="block md:hidden" />
 </template>
 
 <script setup lang="ts">

@@ -26,8 +26,20 @@ export const sidebarList = [
     link: 'dashboard-overview',
   },
   {
-    label: 'Dashboard',
+    label: 'Default',
     icon: '',
     link: 'dashboard-overview',
+    children: [
+      {
+        label: 'Today',
+        icon: '',
+        link: 'dashboard-overview',
+      },
+      {
+        label: 'Dashboard',
+        icon: '',
+        link: 'dashboard-overview',
+      },
+    ]
   },
 ]

@@ -12,11 +12,7 @@ const router = useRouter()
 onMounted(async () => {
   fetching.value = true
   await store.verify_token()
-  if (store.isAuth) {
-    router.push({ name: 'dashboard-overview' })
-  } else {
-    router.push({ name: 'login' })
-  }
+  router.push({ name: 'dashboard-overview' })
   fetching.value = false
 })
 </script>

@@ -11,6 +11,7 @@ import router from './router'
 
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/reset.css'
+import { useAuthStore } from './stores/authStore'
 
 const app = createApp(App)
 
@@ -20,3 +21,6 @@ app.use(VueQueryPlugin)
 app.use(router)
 app.use(Antd)
 app.mount('#app')
+
+// const authStore = useAuthStore()
+// await authStore.verify_token()
