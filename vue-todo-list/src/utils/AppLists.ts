@@ -7,11 +7,11 @@
  * ----------
  * default lists
  *  today
- *  tomorrow
- *  next week ?
- *  next month ?
+ *  personal
+ *  Learning Quest
+ *  Brainstorming
+ *  Dream big
  * ----------
- * lists / projects
  * teams
  * schedules / deadlines
  * meetings
@@ -26,8 +26,29 @@ export const sidebarList = [
     link: 'dashboard-overview',
   },
   {
-    label: 'Dashboard',
+    label: 'Lists',
     icon: '',
-    link: 'dashboard-overview',
+    link: 'dashboard-lists',
+    children: [],
+  },
+  {
+    label: 'Schedules',
+    icon: '',
+    link: 'dashboard-schedules',
+  },
+  {
+    label: 'Teams',
+    icon: '',
+    link: 'dashboard-teams',
+  },
+  {
+    label: 'Meeting',
+    icon: '',
+    link: 'dashboard-meeting',
+  },
+  {
+    label: 'Events',
+    icon: '',
+    link: 'dashboard-events',
   },
 ]
