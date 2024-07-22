@@ -88,12 +88,14 @@ router.beforeEach(async (to, from) => {
     // const isValid = await store.verify_token()
     if (!store.isAuth) {
       router.push({ name: 'login' })
+      return;
     }
   }
 
   if (to.name?.toString() && ['login', 'signup'].includes(to.name.toString())) {
     if (store.isAuth) {
       router.push({ name: 'dashboard-overview' })
+      return;
     }
   }
 })

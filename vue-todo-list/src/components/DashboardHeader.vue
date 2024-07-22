@@ -5,13 +5,21 @@
         <div id="burguer">
           <div
             @click="layoutStore.toggleDashboardSidebarVisible"
-            class="w-8 h-8 text-2xl bg-sky-200 text-sky-600 hover:bg-sky-500 hover:text-white cursor-pointer rounded flex items-center justify-center transition-all"
+            class="hidden md:flex w-8 h-8 text-2xl bg-sky-200 text-sky-600 hover:bg-sky-500 hover:text-white cursor-pointer rounded items-center justify-center transition-all"
           >
             <span v-if="layoutStore.dashboardSidebarVisible">
               <Icon icon="mdi:hamburger-open" />
             </span>
             <span v-else>
               <Icon icon="mdi:hamburger-close" />
+            </span>
+          </div>
+          <div
+            @click="layoutStore.toggleDrawer"
+            class="flex md:hidden w-8 h-8 text-2xl bg-sky-200 text-sky-600 hover:bg-sky-500 hover:text-white cursor-pointer rounded items-center justify-center transition-all"
+          >
+            <span>
+              <Icon icon="mdi:hamburger-open" />
             </span>
           </div>
         </div>
@@ -51,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { useLayoutStore } from '@/stores/layoutStore';
+import { useLayoutStore } from '@/stores/layoutStore'
 import { Icon } from '@iconify/vue'
 const layoutStore = useLayoutStore()
 </script>
