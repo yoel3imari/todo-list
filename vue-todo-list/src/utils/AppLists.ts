@@ -22,33 +22,33 @@
 export const sidebarList = [
   {
     label: 'Dashboard',
-    icon: '',
+    icon: 'clarity:dashboard-solid',
     link: 'dashboard-overview',
   },
   {
     label: 'Lists',
-    icon: '',
+    icon: 'fluent:tasks-app-28-filled',
     link: 'dashboard-lists',
     children: [],
   },
   {
     label: 'Schedules',
-    icon: '',
+    icon: 'solar:calendar-bold',
     link: 'dashboard-schedules',
   },
   {
     label: 'Teams',
-    icon: '',
+    icon: 'fluent:people-team-24-filled',
     link: 'dashboard-teams',
   },
   {
     label: 'Meeting',
-    icon: '',
+    icon: 'icon-park-solid:online-meeting',
     link: 'dashboard-meeting',
   },
   {
     label: 'Events',
-    icon: '',
+    icon: 'lucide:party-popper',
     link: 'dashboard-events',
   },
 ]

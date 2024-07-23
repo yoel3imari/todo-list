@@ -1,26 +1,30 @@
 <template>
-  <ul class="m-0 flex-1 h-full overflow-auto bg-gray-50 flex flex-col gap-1 px-2 py-2 border-r">
+  <ul class="m-0 flex-1 h-full overflow-auto flex flex-col gap-1 px-2 py-2">
     <li
-      v-for="(v, i) in 5"
+      v-for="(elm, i) in sidebarList"
       :key="i"
-      class="hover:bg-sky-100 hover:text-sky-500 translate-all rounded-lg"
+      class="hover:bg-sky-100 hover:text-sky-500 cursor-pointer rounded-lg"
+      :class="`${route.name === elm.link ? 'bg-sky-100 text-sky-500':'text-gray-500' }`"
     >
-      <Link
-        :to="{ name: 'dashboard-overview' }"
-        class="py-4 px-2 w-full h-full flex gap-4 items-center"
-        :class="layoutStore.dashboardSidebarVisible ? 'justify-start' : 'justify-center'"
+      <RouterLink
+        :to="{ name: elm.link }"
+        class="px-4 py-3 w-full h-full flex gap-4 items-center"
+        :class="`${layoutStore.dashboardSidebarVisible ? 'justify-start' : 'justify-center'}`"
       >
-        <Icon icon="simple-icons:circle" class="text-3xl text-sky-500" />
-        <span v-if="layoutStore.dashboardSidebarVisible" class="transition-all">Link {{ v }}</span>
-      </Link>
+        <Icon :icon="elm.icon" class="text-xl" />
+        <span v-if="layoutStore.dashboardSidebarVisible" class="text-lg">{{ elm.label }}</span>
+      </RouterLink>
     </li>
   </ul>
 </template>
 
 <script setup lang="ts">
 import { useLayoutStore } from '@/stores/layoutStore'
+import { sidebarList } from '@/utils/AppLists';
 import { Icon } from '@iconify/vue/dist/iconify.js'
+import { RouterLink, useRoute } from 'vue-router';
 
+const route = useRoute()
 const layoutStore = useLayoutStore()
 </script>
 

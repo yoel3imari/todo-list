@@ -19,7 +19,7 @@
             class="flex md:hidden w-8 h-8 text-2xl bg-sky-200 text-sky-600 hover:bg-sky-500 hover:text-white cursor-pointer rounded items-center justify-center transition-all"
           >
             <span>
-              <Icon icon="mdi:hamburger-open" />
+              <Icon icon="system-uicons:menu-hamburger" />
             </span>
           </div>
         </div>
