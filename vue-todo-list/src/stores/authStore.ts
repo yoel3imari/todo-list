@@ -57,7 +57,6 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const verify_token: () => Promise<boolean> = async () => {
-    let isValid = false
     const token = TokenService.getToken()
     ApiService.setToken();
     console.log(`token: ${token}`)
@@ -65,20 +64,18 @@ export const useAuthStore = defineStore('auth', () => {
     if (!token) {
       console.log('token missing')
       purgeAuth()
+      return false;
     }
 
-    ApiService.get('/auth/verify')
-      .then(({ data }) => {
-        console.log('token verified')
-        setSession(data.data)
-        isValid = true
-      })
-      .catch(() => {
-        console.log('token not valid')
-        purgeAuth()
-      })
-
-    return isValid
+    try {
+      const {data} = await ApiService.get('/auth/verify')
+      console.log('token verified')
+      setSession(data.data)
+      return true
+    } catch (error) {
+      console.log('token not valid')
+      return false; 
+    }
   }
 
   const logout = async () => {

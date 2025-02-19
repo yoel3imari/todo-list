@@ -15,6 +15,7 @@ declare module 'vue' {
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
     AInputPassword: typeof import('ant-design-vue/es')['InputPassword']
+    DashboardCard: typeof import('./src/components/DashboardCard.vue')['default']
     DashboardFooter: typeof import('./src/components/DashboardFooter.vue')['default']
     DashboardHeader: typeof import('./src/components/DashboardHeader.vue')['default']
     DashboardSidebar: typeof import('./src/components/DashboardSidebar.vue')['default']

@@ -11,7 +11,7 @@ const router = useRouter()
 
 onMounted(async () => {
   fetching.value = true
-  await store.verify_token()
+  // await store.verify_token()
   router.push({ name: 'dashboard-overview' })
   fetching.value = false
 })

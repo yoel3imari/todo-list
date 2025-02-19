@@ -51,19 +51,43 @@ const router = createRouter({
           }
         },
         {
-          path: '/dashboard/todos',
-          component: () => import('../views/dashboard/TodoPage.vue'),
-          name: 'dashboard-todos',
+          path: '/dashboard/lists',
+          component: () => import('../views/dashboard/ItemPage.vue'),
+          name: 'dashboard-lists',
           meta: {
-            title: 'Todos'
+            title: 'Lists'
           }
         },
         {
-          path: '/dashboard/items',
-          component: () => import('../views/dashboard/ItemPage.vue'),
-          name: 'dashboard-items',
+          path: '/dashboard/schedules',
+          component: () => import('../views/dashboard/TodoPage.vue'),
+          name: 'dashboard-schedules',
           meta: {
-            title: 'Items'
+            title: 'Schedules'
+          }
+        },
+        {
+          path: '/dashboard/teams',
+          component: () => import('../views/dashboard/ItemPage.vue'),
+          name: 'dashboard-teams',
+          meta: {
+            title: 'Teams'
+          }
+        },
+        {
+          path: '/dashboard/meeting',
+          component: () => import('../views/dashboard/ItemPage.vue'),
+          name: 'dashboard-meeting',
+          meta: {
+            title: 'Meeting'
+          }
+        },
+        {
+          path: '/dashboard/events',
+          component: () => import('../views/dashboard/ItemPage.vue'),
+          name: 'dashboard-events',
+          meta: {
+            title: 'Events'
           }
         }
       ]
@@ -85,8 +109,8 @@ router.beforeEach(async (to, from) => {
   if (to.meta.middleware === 'auth') {
     // console.log('verifying auth before entering: ' + to.name?.toString())
     // console.log('token: ' + TokenService.getToken())
-    // const isValid = await store.verify_token()
-    if (!store.isAuth) {
+    const isValid = await store.verify_token()
+    if (!isValid) {
       router.push({ name: 'login' })
       return;
     }

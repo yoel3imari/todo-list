@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col h-full max-w-[300px] overflow-auto bg-white">
-    <div id="logo" class="h-16 flex items-center justify-center border-r">
+  <div class="flex flex-col h-full max-w-[300px] overflow-auto bg-white border-r">
+    <div id="logo" class="h-16 flex items-center justify-center">
       <Link to="/dashboard/overview">
         <span class="text-3xl m-0 flex items-center justify-center gap-4">
           <Icon icon="mdi:todo-minus" class="text-sky-700 text-4xl" />
@@ -14,10 +14,10 @@
     
     <SidebarList />
 
-    <div class="py-4 flex items-center justify-center border-r">
-      <Link to="/dashboard/overview" class="flex gap-4 items-center justify-center text-sky-500">
-        <Icon icon="lets-icons:sign-out-squre" class="text-4xl" />
-        <h1 v-if="layoutStore.dashboardSidebarVisible" class="text-xl mt-2 font-bold m-0">
+    <div class="flex items-center justify-center p-2">
+      <Link to="/dashboard/overview" class="flex gap-4 px-4 py-3 w-full items-center justify-center text-sky-500 hover:bg-sky-100 hover:text-sky-500 cursor-pointer rounded-lg">
+        <Icon icon="lets-icons:sign-out-squre" class="text-2xl" />
+        <h1 v-if="layoutStore.dashboardSidebarVisible" class="text-lg m-0">
           <span>Sign Out</span>
         </h1>
       </Link>
